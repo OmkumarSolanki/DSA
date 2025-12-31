@@ -41,14 +41,47 @@ class Solution {
         int opt2 = abs(height[n]-height[n-1]) + calculateMinCost2(n-1, height, dp);
         return dp[n] = min(opt1, opt2);
     }
+    
   public:
     int minCost(vector<int>& height) {
         int n = height.size();
         // return calculateMinCost(n-1, height);
         
         // Method 2
-        vector<int> dp(n, -1);
-        return calculateMinCost2(n-1, height, dp);
+        // vector<int> dp(n, -1);
+        // return calculateMinCost2(n-1, height, dp);
+        
+        // Method 3
+        // Tabulation
+        // dp[0] = 0;
+        // dp[1] = abs(height[1] - height[0]);
+        // for(int i=2; i<n; i++) {
+        //     int opt1 = abs(height[i]-height[i-2]) + dp[i-2];
+        //     int opt2 = abs(height[i]-height[i-1]) + dp[i-1];
+        //     dp[i] = min(opt1, opt2);
+        // }
+         
+        // return dp[n-1];
+        
+        // Method 4
+        // Space Optimised tabulation
+        int f0 = 0, f1 = abs(height[1] - height[0]), f2;
+        if(n==1) {
+            return f0;
+        } else if (n==2) {
+            return f1;
+        } 
+        
+        for(int i=2; i<n; i++) {
+            int opt1 = abs(height[i]-height[i-2]) + f0;
+            int opt2 = abs(height[i]-height[i-1]) + f1;
+            f2 = min(opt1, opt2);
+            
+            f0 = f1;
+            f1 = f2;
+        }
+         
+        return f2;
         
     }
 };
