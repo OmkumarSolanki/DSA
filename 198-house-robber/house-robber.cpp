@@ -40,7 +40,7 @@ private:
         } else if (n == 1) {
             return max(nums[0], nums[1]);
         }
-        if(dp[n]!=-1) {
+        if (dp[n] != -1) {
             return dp[n];
         }
 
@@ -55,6 +55,21 @@ private:
         dp[n] = max(opt1, opt2);
         return dp[n];
     }
+    // Recursion + Memoization
+    int calculateMaxMoney3(int n, vector<int>& nums, vector<int>& dp) {
+        if (n < 0) {
+            return 0;
+        }
+        if (dp[n] != -1) {
+            return dp[n];
+        }
+
+        int opt1 = nums[n] + calculateMaxMoney3(n - 2, nums, dp);
+        int opt2 = calculateMaxMoney3(n - 1, nums, dp);
+
+        dp[n] = max(opt1, opt2);
+        return dp[n];
+    }
 
 public:
     int rob(vector<int>& nums) {
@@ -63,7 +78,11 @@ public:
         // return calculateMaxMoney1(n - 1, nums);
 
         vector<int> dp(n, -1);
-        return calculateMaxMoney2(n - 1, nums, dp);
+        // return calculateMaxMoney2(n - 1, nums, dp);
+        return calculateMaxMoney3(n - 1, nums, dp);
 
+        // Tabulation
+        // dp[0] = nums[0];
+        // dp[1] = max(nums[0], nums[1]);
     }
 };
