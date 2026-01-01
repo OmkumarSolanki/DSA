@@ -79,10 +79,27 @@ public:
 
         vector<int> dp(n, -1);
         // return calculateMaxMoney2(n - 1, nums, dp);
-        return calculateMaxMoney3(n - 1, nums, dp);
+        // return calculateMaxMoney3(n - 1, nums, dp);
 
         // Tabulation
-        // dp[0] = nums[0];
-        // dp[1] = max(nums[0], nums[1]);
+        dp[0] = nums[0];
+        if (n == 1) {
+            return dp[0];
+        }
+        dp[1] = max(nums[0], nums[1]);
+        if (n == 2) {
+            return max(nums[0], nums[1]);
+        }
+        for (int i = 2; i < n; i++) {
+            int opt1 = 0, opt2 = 0;
+            if (i - 2 >= 0) {
+                opt1 = nums[i] + dp[i - 2];
+            }
+            if (i - 1 >= 0) {
+                opt2 = dp[i - 1];
+            }
+            dp[i] = max(opt1, opt2);
+        }
+        return dp[n - 1];
     }
 };
