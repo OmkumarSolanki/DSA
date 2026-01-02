@@ -82,24 +82,50 @@ public:
         // return calculateMaxMoney3(n - 1, nums, dp);
 
         // Tabulation
-        dp[0] = nums[0];
+        // dp[0] = nums[0];
+        // if (n == 1) {
+        //     return dp[0];
+        // }
+        // dp[1] = max(nums[0], nums[1]);
+        // if (n == 2) {
+        //     return max(nums[0], nums[1]);
+        // }
+        // for (int i = 2; i < n; i++) {
+        //     int opt1 = 0, opt2 = 0;
+        //     if (i - 2 >= 0) {
+        //         opt1 = nums[i] + dp[i - 2];
+        //     }
+        //     if (i - 1 >= 0) {
+        //         opt2 = dp[i - 1];
+        //     }
+        //     dp[i] = max(opt1, opt2);
+        // }
+        // return dp[n - 1];
+
+        // Space Optimised Tabulation
+        int f0, f1, f2;
+        f0 = nums[0];
         if (n == 1) {
-            return dp[0];
+            return f0;
         }
-        dp[1] = max(nums[0], nums[1]);
+        f1 = max(nums[0], nums[1]);
         if (n == 2) {
-            return max(nums[0], nums[1]);
+            return f1;
         }
         for (int i = 2; i < n; i++) {
             int opt1 = 0, opt2 = 0;
             if (i - 2 >= 0) {
-                opt1 = nums[i] + dp[i - 2];
+                opt1 = nums[i] + f0;
             }
             if (i - 1 >= 0) {
-                opt2 = dp[i - 1];
+                opt2 = f1;
             }
-            dp[i] = max(opt1, opt2);
+            f2 = max(opt1, opt2);
+
+            f0 = f1;
+            f1 = f2;
         }
-        return dp[n - 1];
+        return f2;
+
     }
 };
