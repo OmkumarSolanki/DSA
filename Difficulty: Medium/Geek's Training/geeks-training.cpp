@@ -26,7 +26,7 @@ class Solution {
         // 1st is the nth day and what we have choosen on that day
         
         int n = arr.size();
-        vector<vector<int>> dp(n, vector<int>(3, -1));
+        // vector<vector<int>> dp(n, vector<int>(3, -1));
         
         // on the last index I have three options
         // whether I can select Running, Fighting or learning
@@ -41,6 +41,8 @@ class Solution {
         // now we want to start from index 0
         // dp[0][0] means we have selected running(0) at index 0
         // dp[0][0] represents maximum points earned at day 0 and by selected running
+        /**
+        
         dp[0][0] = arr[0][0];
         dp[0][1] = arr[0][1];
         dp[0][2] = arr[0][2];
@@ -65,6 +67,8 @@ class Solution {
         
         return max( dp[n-1][0], max(dp[n-1][1], dp[n-1][2]) );
         
+        **/
+        
         /**
          1 2 5
          3 1 1 
@@ -79,6 +83,40 @@ class Solution {
           
          **/
         
+        // Space Optimised Tabulation
+        // dp[0][0] = arr[0][0];
+        // dp[0][1] = arr[0][1];
+        // dp[0][2] = arr[0][2];
+        
+        vector<int> prev (3, -1);
+        prev[0] = arr[0][0];
+        prev[1] = arr[0][1];
+        prev[2] = arr[0][2];
+        
+        for(int i=1; i<n; i++) {
+            vector<int> curr (3, -1);
+            for(int j=0; j<3; j++) {
+                // at day i I have selected j activity
+                // and by chosing j activity what max points I can achieve 
+                // dp[i][j] = arr[i][j] + max( two remaining activities If I have selected J  );
+                int points = 0;
+                for(int k=0; k<3; k++) {
+                    // this loop is that I have selected j activity today but to calcualte 
+                    // value for today I need to check what other two activity has max values
+                    // on the previous day
+                    if(j!=k) {
+                        // points = max(points, arr[i][j] + dp[i-1][k] );
+                        points = max(points, arr[i][j] + prev[k] );
+                    }
+                    // dp[i][j] = points;
+                    curr[j] = points;
+                }
+            }
+            prev = curr;
+        }
+        
+        // return max( dp[n-1][0], max(dp[n-1][1], dp[n-1][2]) );
+        return max( prev[0], max(prev[1], prev[2]) );
         
     }
 };
