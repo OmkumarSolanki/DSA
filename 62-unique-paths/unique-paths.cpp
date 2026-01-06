@@ -1,4 +1,22 @@
-class Solution {    
+class Solution {
+private:
+    // Recursive Solution
+    // TC - O(m*n)
+    // SC - O(m*n) dp + O(m+n) Recursive Stack
+    int findTotalUniquePaths(int m, int n, vector<vector<int>>& dp) {
+        if (m == 0 && n == 0) {
+            return 1;
+        }
+        if (m < 0 || n < 0) {
+            return 0;
+        }
+        if(dp[m][n]!=-1) {
+            return dp[m][n];
+        }
+        return dp[m][n] = findTotalUniquePaths(m, n - 1, dp) +
+                          findTotalUniquePaths(m - 1, n, dp);
+    }
+
 public:
     int uniquePaths(int m, int n) {
         /**
@@ -19,6 +37,11 @@ public:
 
         first row and first column there is only one way to reach there
         **/
+
+        // Recursive Solution
+        vector<vector<int>> dp(m, vector<int>(n, -1));
+        return findTotalUniquePaths(m - 1, n - 1, dp);
+
         /**
         vector<vector<int>> dp(m, vector<int>(n, -1));
         // first columne
@@ -28,7 +51,7 @@ public:
         // first row
         for(int i=0; i<n; i++){
             dp[0][i] = 1;
-        } 
+        }
 
         for(int i=1; i<m; i++) {
             for(int j=1; j<n; j++) {
@@ -53,14 +76,14 @@ public:
         **/
 
         vector<int> prev(n, 1);
-        for(int i=1; i<m; i++) {
+        for (int i = 1; i < m; i++) {
             vector<int> curr(n, 1);
-            for(int j=1; j<n; j++) {
-                curr[j] = prev[j] + curr[j-1];
+            for (int j = 1; j < n; j++) {
+                curr[j] = prev[j] + curr[j - 1];
             }
             prev = curr;
         }
-        return prev[n-1];
+        return prev[n - 1];
         // TC - O(m*n)
         // SC - O(n)
     }
