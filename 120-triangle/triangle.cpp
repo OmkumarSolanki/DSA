@@ -36,26 +36,54 @@ public:
 
         // TC - O(n*n)
         // SC - O(n*n) dp 
-        vector<vector<int>> dp(n, vector<int>(n, -1));
-        dp[0][0] = triangle[0][0];
+        // vector<vector<int>> dp(n, vector<int>(n, -1));
+        // dp[0][0] = triangle[0][0];
+        // for(int i=1; i<n; i++) {
+        //     for(int j=0; j<=i; j++) {
+        //         int opt1 = INT_MAX, opt2 = INT_MAX;
+        //         // opt1 -> above + left
+        //         // opt2 -> above
+        //         if(j-1>=0) {
+        //             opt1 = triangle[i][j] + dp[i-1][j-1]; 
+        //         }
+        //         if(j <= i-1) {
+        //             opt2 = triangle[i][j] + dp[i-1][j]; 
+        //         }
+
+        //         dp[i][j] = min(opt1, opt2);
+        //     }
+        // }
+        // int minV = INT_MAX;
+        // for(int i=0; i<n; i++) {
+        //     minV = min(minV, dp[n-1][i]);
+        // }
+        // return minV;
+
+        // Space Optimised DP
+        // TC - O(n*n)
+        // SC - O(n) dp 
+        vector<int> prev(n, -1);
+        prev[0] = triangle[0][0];
         for(int i=1; i<n; i++) {
+            vector<int> curr(n, -1);
             for(int j=0; j<=i; j++) {
                 int opt1 = INT_MAX, opt2 = INT_MAX;
                 // opt1 -> above + left
                 // opt2 -> above
                 if(j-1>=0) {
-                    opt1 = triangle[i][j] + dp[i-1][j-1]; 
+                    opt1 = triangle[i][j] + prev[j-1]; 
                 }
                 if(j <= i-1) {
-                    opt2 = triangle[i][j] + dp[i-1][j]; 
+                    opt2 = triangle[i][j] + prev[j]; 
                 }
 
-                dp[i][j] = min(opt1, opt2);
+                curr[j] = min(opt1, opt2);
             }
+            prev = curr;
         }
         int minV = INT_MAX;
         for(int i=0; i<n; i++) {
-            minV = min(minV, dp[n-1][i]);
+            minV = min(minV, prev[i]);
         }
         return minV;
     }
