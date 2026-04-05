@@ -1,11 +1,11 @@
 class Solution {
   private:
-    void rec(int node, vector<vector<int>>& adj, vector<bool>& vis, vector<int>& ans) {
+    void recursion(int node, vector<bool>& vis, vector<vector<int>>& adj, vector<int>& ans) {
         vis[node] = true;
         ans.push_back(node);
         for(int i=0; i<adj[node].size(); i++) {
-            if( vis[adj[node][i]] == false ) {
-                rec( adj[node][i], adj, vis, ans );
+            if( vis[ adj[node][i] ] == false ) {
+                recursion( adj[node][i], vis, adj, ans );
             }
         }
     }
@@ -15,7 +15,7 @@ class Solution {
         int n = adj.size();
         vector<bool> vis(n, false);
         vector<int> ans;
-        rec(0, adj, vis, ans);
+        recursion(0, vis, adj, ans);
         return ans;
         
     }
